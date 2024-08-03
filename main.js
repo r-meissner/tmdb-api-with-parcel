@@ -34,7 +34,7 @@ window.addEventListener('load', async () => {
 //send search request to api and render results
 searchButton.addEventListener("click", async () => {
     container.replaceChildren(); //remove previously rendered movies
-    const query = searchInput.value.replaceAll(" ","%20");
+    const query = searchInput.value.replaceAll(" ", "%20");
     try {
         const res = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`, options);
         if (!res.ok) throw new Error('Something went wrong');
@@ -47,7 +47,7 @@ searchButton.addEventListener("click", async () => {
                 renderMovieCard(element);
             });
         }
-        
+
     } catch (error) {
         console.error(error);
     }
@@ -93,3 +93,97 @@ function renderMovieCard(movie) {
     //append everything to the DOM
     container.appendChild(movieCard);
 }
+
+let debounceTimer;
+
+// Fetch search suggestions from the API
+async function fetchSearchSuggestions(query) {
+    // Make an API request to fetch search suggestions based on the query
+    const response = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${options.headers.Authorization.split(' ')[1]}&query=${query}&page=1`, options);
+    // Parse the response data as JSON
+    const data = await response.json();
+    // Return the top 4 results from the data
+    return data.results.slice(0, 4);
+}
+
+// Display search suggestions in the suggestions container
+function displaySearchSuggestions(suggestions) {
+    // Get the search suggestions container element
+    const suggestionsContainer = document.getElementById('searchSuggestions');
+    // Clear any previous suggestions
+    suggestionsContainer.innerHTML = '';
+
+    // Check if there are any suggestions
+    if (suggestions.length > 0) {
+        // If suggestions are present, remove the 'hidden' class to display the container
+        suggestionsContainer.classList.remove('hidden');
+        // Iterate through each suggestion item
+        suggestions.forEach((item, index) => {
+            // Only display movies or TV shows
+            if (item.media_type === 'movie' || item.media_type === 'tv') {
+                // Create a div element for each suggestion item
+                const suggestionItem = document.createElement('div');
+                // Classes for styling and interactivity
+                suggestionItem.classList.add('p-3', 'hover:bg-gray-700', 'cursor-pointer', 'text-white', 'transition', 'duration-300');
+                // Border to all items except the last one
+                if (index !== suggestions.length - 1) {
+                    suggestionItem.classList.add('border-b', 'border-gray-700');
+                }
+
+                // Create and set the title element
+                const title = document.createElement('div');
+                title.textContent = item.title || item.name;
+                title.classList.add('font-semibold');
+
+                // Create and set the year element
+                const year = document.createElement('div');
+                year.textContent = new Date(item.release_date || item.first_air_date).getFullYear();
+                year.classList.add('text-gray-400', 'text-sm');
+
+                // Append title and year to the suggestion item
+                suggestionItem.appendChild(title);
+                suggestionItem.appendChild(year);
+
+                // Click event to set the search input value and trigger the search
+                suggestionItem.addEventListener('click', () => {
+                    document.getElementById('search').value = item.title || item.name;
+                    suggestionsContainer.classList.add('hidden');
+                    document.getElementById('submit-search').click();
+                });
+                // Append the suggestion item to the suggestions container
+                suggestionsContainer.appendChild(suggestionItem);
+            }
+        });
+    } else {
+        // If no suggestions, hide the container 
+        suggestionsContainer.classList.add('hidden');
+    }
+}
+
+// Event listener to the search input for fetching and displaying suggestions
+document.getElementById('search').addEventListener('input', (e) => {
+    // Clear any previous debounce timer
+    clearTimeout(debounceTimer);
+    // Get the current input value
+    const query = e.target.value;
+
+    // If query length is more than 2 characters, fetch and display suggestions
+    if (query.length > 2) {
+        debounceTimer = setTimeout(async () => {
+            const suggestions = await fetchSearchSuggestions(query);
+            displaySearchSuggestions(suggestions);
+        }, 300); // Wait for 300ms before making the API call to avoid excessive requests
+    } else {
+        // Hide the suggestions container if query length is less thna 3 characters
+        document.getElementById('searchSuggestions').classList.add('hidden');
+    }
+});
+
+// Hide suggestions container when clicking outside of the search area
+document.addEventListener('click', (e) => {
+    // Check if the clicked element is outside the search container
+    if (!e.target.closest('.flex.items-center.justify-center.mb-6.relative')) {
+        document.getElementById('searchSuggestions').classList.add('hidden');
+    }
+});
+

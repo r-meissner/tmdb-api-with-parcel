@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles.css" />
     <title>Movie Diary</title>
 </head>
+
 <body class="bg-gray-900 text-white">
     <!-- Header section -->
     <header class="bg-gray-800 p-4">
@@ -17,17 +19,48 @@
             </ul>
         </nav>
     </header>
-    
+
     <main class="p-4">
-        <!-- Search form -->
-        <div class="flex items-center justify-center mb-6">
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline" id="search" type="text" placeholder="Search for movies...">
-            <button class="ml-2 bg-yellow-500 hover:bg-yellow-700 text-gray-900 font-bold py-2 px-4 rounded" id="submit-search">
-                Search
-            </button>
+        <!-- Search bar with aligned suggestions -->
+        <div class="bg-gray-900 py-8 mb-6 relative w-full">
+            <div class="max-w-full px-4">
+                <div class="relative">
+                    <div class="flex items-center h-12 w-full">
+                        <!-- Search input -->
+                        <input
+                            class="w-full h-full pl-11 pr-36 text-white bg-gray-800 border border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-300 shadow-lg text-base"
+                            id="search" type="text" placeholder="Search for movies...">
+                        <!-- Search icon -->
+                        <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <!-- Search button -->
+                        <button
+                            class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-medium text-sm py-2 px-6 rounded-full transition duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-300 h-10"
+                            id="submit-search">
+                            Search
+                        </button>
+                    </div>
+                    <!-- Search suggestions container -->
+                    <div id="searchSuggestions"
+                        class="absolute left-0 right-0 mt-2 bg-gray-800 rounded-2xl shadow-lg z-20 hidden overflow-hidden border border-gray-700">
+                        <!-- Suggestion items will be dynamically added here by JavaScript -->
+                    </div>
+                </div>
+            </div>
         </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4" id="movie-container"></div>
+        <!-- Container for movie results -->
+        <div class="max-w-full px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4" id="movie-container">
+            </div>
+        </div>
     </main>
     <script src="main.js"></script>
 </body>
+
 </html>
