@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Movie Diary</title>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Header section -->
+    <header class="bg-gray-800 p-4">
+        <h1 class="text-yellow-400 text-3xl font-bold text-center mb-4">Your Movie Diary</h1>
+        <nav>
+            <ul id="navlinks" class="flex justify-around">
+                <li><a href="index.html" class="text-yellow-400 hover:underline">Home</a></li>
+                <li><a href="journal.html" class="text-yellow-400 hover:underline">Favorites</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="p-4">
+        <!-- Search form -->
+        <div class="flex items-center justify-center mb-6">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline" id="search" type="text" placeholder="Search for movies...">
+            <button class="ml-2 bg-yellow-500 hover:bg-yellow-700 text-gray-900 font-bold py-2 px-4 rounded" id="submit-search">
+                Search
+            </button>
+        </div>
+            <div class="grid grid-cols-3 gap-4" id="movie-container"></div>
+    </main>
+    <script src="main.js"></script>
+</body>
+</html>
