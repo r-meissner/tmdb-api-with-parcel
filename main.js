@@ -76,7 +76,7 @@ function renderMovieCard (movie) {
     favoriteButton.textContent = "Add to Favorites";
     favoriteButton.addEventListener("click", () => {
         const previousData = JSON.parse(localStorage.getItem('favorites')) || [];
-        localStorage.setItem('favorites', JSON.stringify([...previousData, element]));
+        localStorage.setItem('favorites', JSON.stringify([...previousData, movie]));
     });
     favoriteButton.classList = "bg-yellow-500 hover:bg-yellow-700 text-gray-900 font-bold max-w-fit py-2 px-4 my-4 mx-auto rounded";
     movieCard.appendChild(favoriteButton);
