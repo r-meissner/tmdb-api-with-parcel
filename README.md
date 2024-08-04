@@ -65,7 +65,7 @@ To use the Movie Diary web application:
 ### Homepage
 
 - The homepage displays a list of popular movies.
-- Use the search bar to find specific movies or TV shows.
+- Use the search bar to find specific movies.
 
 ### Journal Page
 
