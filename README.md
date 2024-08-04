@@ -10,12 +10,13 @@ This project is a part of the Full Stack Web & App Bootcamp at [WBS Coding Schoo
   - [Journal Page](#journal-page)
 - [Technologies Used](#technologies-used)
 - [Usage](#usage)
+- [Project Structure](#project-structure)
 - [Learning Outcomes](#learning-outcomes)
-- [Future Enhancements](#future-enhancements)
 - [Refactoring](#refactoring)
 - [Contributing](#contributing)
-- [License](#license)
+- [Useful Resources](#useful-resources)
 - [Team Members](#team-members)
+- [Disclaimer](#disclaimer)
 
 ## Project Overview
 
@@ -72,6 +73,22 @@ To use the Movie Diary web application:
 - The Journal Page displays your list of favorite movies.
 - Add personal notes to each movie and save them.
 
+## Project Structure
+
+```
+tmdb-api-with-parcel/
+├── index.html
+├── journal.html
+├── journal.js
+├── main.js
+├── package-lock.json
+├── package.json
+├── README.md
+├── src
+│   └── styles.css
+└── tailwind.config.js
+```
+
 ## Learning Outcomes
 
 Through this project, we gained valuable experience and skills in the following areas:
@@ -97,17 +114,21 @@ During the refactoring process, we also introduced Parcel as a bundler to stream
 
 Contributions to this project are welcome. If you find any bugs or have suggestions for improvements, please open an issue or submit a pull request.
 
-## License
+## Useful Resources
 
-This project is licensed under the [MIT License](LICENSE).
+- [GitHub Intro](https://guides.github.com/introduction/flow/)
+- [JavaScript Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [TailwindCSS Documentation](https://tailwindcss.com/docs)
+- [TMDB API Documentation](https://developers.themoviedb.org/3/getting-started/introduction)
+- [NPM Documentation](https://www.npmjs.com/)
 
 ## Team Members
 
-- Ruth
-- Parvin
-- Iryna
-- Fabian
+- [Ruth](https://github.com/r-meissner)
+- [Parvin](https://github.com/parvinrao079)
+- [Iryna](https://github.com/AryKR)
+- [Fabian](https://github.com/HOB3R)
 
-### Disclaimer
+## Disclaimer
 
 This project is created for educational purposes as part of the WBS Coding School Bootcamp.
