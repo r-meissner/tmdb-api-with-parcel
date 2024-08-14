@@ -76,6 +76,12 @@ function renderMovieCard(movie) {
 
     //render the favortie button
     const favoriteButton = document.createElement("button");
+    favoriteButton.textContent = "Add to Favorites";
+    favoriteButton.addEventListener("click", () => {
+        const previousData = JSON.parse(localStorage.getItem('favorites')) || [];
+        localStorage.setItem('favorites', JSON.stringify([...previousData, movie]));
+    });
+    favoriteButton.classList = "bg-yellow-500 hover:bg-yellow-700 text-gray-900 font-bold max-w-fit py-2 px-4 my-4 mx-auto rounded";
     favoriteButton.classList = "absolute top-0 right-0 bg-yellow-500 hover:bg-yellow-700 text-gray-900 font-bold max-w-fit py-2 px-4 rounded";
     //conditional rendering based on if movie is already in favorites
     let previousData = JSON.parse(localStorage.getItem('favorites')) || [];
