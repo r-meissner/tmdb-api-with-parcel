@@ -9,37 +9,37 @@ const options = {
 document.addEventListener('DOMContentLoaded', () => {
     const favoritesContainer = document.getElementById('favorites-container');
 
-   // Create the search bar and search button elements with enhanced styling
-   const searchContainer = document.createElement('div');
-   searchContainer.classList.add('flex', 'justify-center', 'items-center', 'mb-4', 'p-4');
-   searchContainer.style.position = 'relative';
-   searchContainer.style.maxWidth = '800px';
-   searchContainer.style.margin = '0 auto';
+    // Create the search bar and search button elements with enhanced styling
+    const searchContainer = document.createElement('div');
+    searchContainer.classList.add('flex', 'justify-center', 'items-center', 'mb-4', 'p-4');
+    searchContainer.style.position = 'relative';
+    searchContainer.style.maxWidth = '800px';
+    searchContainer.style.margin = '0 auto';
 
-   const searchInput = document.createElement('input');
-   searchInput.id = 'search-input';
-   searchInput.type = 'text';
-   searchInput.placeholder = 'Search for movies...';
-   searchInput.classList.add('p-3', 'pl-20', 'w-full', 'rounded-full', 'shadow', 'focus:outline-none', 'focus:ring-2', 'focus:ring-yellow-500', 'bg-gray-800', 'text-white');
-   searchInput.style.border = 'none';
+    const searchInput = document.createElement('input');
+    searchInput.id = 'search-input';
+    searchInput.type = 'text';
+    searchInput.placeholder = 'Search for movies...';
+    searchInput.classList.add('p-3', 'pl-20', 'w-full', 'rounded-full', 'shadow', 'focus:outline-none', 'focus:ring-2', 'focus:ring-yellow-500', 'bg-gray-800', 'text-white');
+    searchInput.style.border = 'none';
 
-   const searchIcon = document.createElement('span');
-   searchIcon.style.position = 'absolute';
-   searchIcon.style.left = '30px';
-   searchIcon.style.color = '#9ca3af'; // Tailwind's gray-400 color
-   searchIcon.innerHTML = `
+    const searchIcon = document.createElement('span');
+    searchIcon.style.position = 'absolute';
+    searchIcon.style.left = '30px';
+    searchIcon.style.color = '#9ca3af'; // Tailwind's gray-400 color
+    searchIcon.innerHTML = `
        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
            <path fill-rule="evenodd" d="M12.9 14.32a8 8 0 111.414-1.414l4.292 4.293a1 1 0 01-1.414 1.414l-4.292-4.293zm-1.414-2.121a6 6 0 100-12 6 6 0 000 12z" clip-rule="evenodd" />
        </svg>`;
-   searchContainer.appendChild(searchIcon);
-   searchContainer.appendChild(searchInput);
+    searchContainer.appendChild(searchIcon);
+    searchContainer.appendChild(searchInput);
 
-   const searchButton = document.createElement('button');
-   searchButton.id = 'search-button';
-   searchButton.classList.add('bg-yellow-500', 'hover:bg-yellow-600', 'text-black', 'font-bold', 'py-2', 'px-4', 'rounded-full', 'ml-2', 'shadow-md');
-   searchButton.textContent = 'Search';
+    const searchButton = document.createElement('button');
+    searchButton.id = 'search-button';
+    searchButton.classList.add('bg-yellow-500', 'hover:bg-yellow-600', 'text-black', 'font-bold', 'py-2', 'px-4', 'rounded-full', 'ml-2', 'shadow-md');
+    searchButton.textContent = 'Search';
 
-   searchContainer.appendChild(searchButton);
+    searchContainer.appendChild(searchButton);
 
     // Insert the search bar at the top of the favorites container
     favoritesContainer.insertAdjacentElement('beforebegin', searchContainer);
@@ -68,7 +68,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const filteredMovies = favoriteMovies.filter(movie =>
             movie.title.toLowerCase().includes(searchTerm)
         );
-        displayMovies(filteredMovies);
+
+        // Clear the favorites container
+        favoritesContainer.innerHTML = '';
+
+        if (filteredMovies.length > 0) {
+            // If movies match the search term, display them
+            displayMovies(filteredMovies);
+        } else {
+            // If no movies match, display an error message
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = 'No movies found in your favorites.';
+            errorMessage.classList.add('text-center', 'text-yellow-400', 'text-xl', 'font-bold', 'mt-4');
+            favoritesContainer.appendChild(errorMessage);
+        }
     });
 
     async function fetchMovieDetails(movieId) {
@@ -110,6 +123,43 @@ document.addEventListener('DOMContentLoaded', () => {
         notesTextarea.classList.add('w-full', 'border', 'rounded', 'p-2', 'mb-2');
         notesTextarea.value = notes || '';
         descriptionOverlay.appendChild(notesTextarea);
+    
+        // Rating System
+        const ratingContainer = document.createElement('div');
+        ratingContainer.classList.add('flex', 'justify-center', 'items-center', 'mb-4');
+    
+        // Function to render stars based on the current rating
+        function renderStars(rating) {
+            ratingContainer.innerHTML = ''; // Clear the container first
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ${i <= rating ? 'text-yellow-500' : 'text-gray-400'}" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M12 2c-.69 0-1.27.34-1.62.88L8.82 6.15l-4.33.63c-.86.13-1.2 1.18-.58 1.77l3.13 3.04-.74 4.32c-.15.86.75 1.51 1.54 1.1l3.88-2.04 3.88 2.04c.79.41 1.69-.24 1.54-1.1l-.74-4.32 3.13-3.04c.62-.59.28-1.64-.58-1.77l-4.33-.63-1.56-3.27C13.27 2.34 12.69 2 12 2z" clip-rule="evenodd"/>
+                    </svg>`;
+                star.addEventListener('click', () => {
+                    saveRating(movie.id, i);
+                });
+                ratingContainer.appendChild(star);
+            }
+        }
+    
+        // Function to save the rating
+        function saveRating(movieId, rating) {
+            favoriteMovies = favoriteMovies.map(fav => {
+                if (fav.id === movieId) {
+                    return { ...fav, rating: rating };
+                }
+                return fav;
+            });
+            localStorage.setItem('favorites', JSON.stringify(favoriteMovies));
+            renderStars(rating); // Re-render stars with the new rating
+        }
+    
+        // Get the current rating for this movie, or default to 0
+        const currentRating = favoriteMovies.find(fav => fav.id === movie.id)?.rating || 0;
+        renderStars(currentRating);
+        descriptionOverlay.appendChild(ratingContainer);
     
         const buttonContainer = document.createElement('div');
         buttonContainer.classList.add('flex', 'space-x-2');
@@ -223,5 +273,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
         favoritesContainer.appendChild(movieCard);
     }
+    
     
 });
